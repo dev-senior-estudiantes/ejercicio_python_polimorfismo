@@ -1,8 +1,13 @@
+"""
+Para automatizar la creación y asignación de issues de ejercicios de POO en un repo de GitHub.
+"""
+
 import os
 import random
 import json
 from dotenv import load_dotenv
 from github import Github
+from github.GithubException import GithubException
 
 # --- Configuración --- #
 # Cargar variables de entorno desde el archivo .env
@@ -63,7 +68,7 @@ def main():
     # 2. Obtener el repositorio
     try:
         repo = g_repo.get_repo(REPO_NAME)
-    except Exception as e:
+    except GithubException as e:
         print(f"Error al acceder al repositorio: {e}")
         return
 
@@ -75,7 +80,7 @@ def main():
         if not team_members:
             print(f"El equipo '{TEAM_SLUG}' no tiene miembros. No se pueden asignar issues.")
             return
-    except Exception as e:
+    except GithubException as e:
         print(f"Error al obtener el equipo o sus miembros: {e}")
         return
 
@@ -89,44 +94,10 @@ def main():
         print("No se encontraron ejercicios en 'ejercicios.json'. Abortando.")
         return
 
-    # 5. Crear o obtener el proyecto Kanban
-    project_name = "Proyecto de Ejercicios POO - Python"
-    print(f"Creando o verificando proyecto '{project_name}'...")
-    try:
-        # Intentar crear el proyecto
-        project = repo.create_project(project_name, body="Proyecto para gestionar los ejercicios de POO.")
-        # Crear columnas Kanban si no existen
-        columns = project.get_columns()
-        if not any(col.name == "Pendiente" for col in columns):
-            todo_column = project.create_column("Pendiente")
-        else:
-            todo_column = next(col for col in columns if col.name == "Pendiente")
-        if not any(col.name == "En Progreso" for col in columns):
-            project.create_column("En Progreso")
-        if not any(col.name == "Finalizado" for col in columns):
-            project.create_column("Finalizado")
-        print("Proyecto y columnas configuradas con éxito.")
-    except Exception as e:
-        # Si el proyecto ya existe, obtenerlo
-        print(f"No se pudo crear el proyecto (puede que ya exista): {e}")
-        projects = repo.get_projects(state='open')
-        project = next((p for p in projects if p.name == project_name), None)
-        if project:
-            print(f"Encontrado proyecto existente '{project_name}'.")
-            columns = project.get_columns()
-            todo_column = next((c for c in columns if c.name == "Pendiente"), None)
-            if not todo_column:
-                print("Error: No se encontró la columna 'Pendiente' en el proyecto existente.")
-                return
-        else:
-            print("Error: No se pudo encontrar un proyecto existente con ese nombre.")
-            return
-
-    # 6. Crear y asignar issues
-    print("\nCreando, asignando y añadiendo issues al proyecto...")
+    # 5. Crear y asignar issues (sin gestión de proyectos clásicos ni columnas Kanban)
+    print("\nCreando y asignando issues...")
     for ejercicio in ejercicios_poo:
-        assignee = random.choice(team_members)
-        
+        assignee = random.choice(team_members) 
         # Formatear el cuerpo del issue
         issue_body = issue_template.format(
             planteamiento=ejercicio["planteamiento"],
@@ -142,16 +113,13 @@ def main():
                 labels=["ejercicio", "POO", "python"]  # Etiquetas personalizables
             )
             print(f"Creado issue '{issue.title}' y asignado a '{assignee}'.")
-
-            # Añadir el issue a la columna 'Pendiente'
-            if todo_column:
-                card = todo_column.create_card(content_id=issue.id, content_type="Issue")
-                print(f"Issue {issue.id} añadido a la columna 'Pendiente' con éxito.")
-        except Exception as e:
-            print(f"Error al procesar el issue '{ejercicio['titulo']}': {e}")
+        except (KeyError, TypeError) as e:
+            print(f"Error en los datos del ejercicio '{ejercicio.get('titulo', 'Sin título')}': {e}")
+        except GithubException as e:
+            print(f"Error de GitHub al procesar el issue '{ejercicio.get('titulo', 'Sin título')}': {e}")
 
     print("\n¡Proceso completado!")
-    print(f"Los issues han sido creados y añadidos a la columna 'Pendiente' del proyecto '{project_name}'.")
+    print("Los issues han sido creados y asignados.")
 
 if __name__ == "__main__":
     main()
