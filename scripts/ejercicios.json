@@ -1,0 +1,162 @@
+[
+    {
+        "titulo": "Ejercicio 1: Clase Coche",
+        "planteamiento": "Crear una clase `Coche` con atributos para marca, modelo y año. Incluye un método para mostrar su información.",
+        "pseudocodigo": "CLASE Coche\n  ATRIBUTOS: marca, modelo, anio\n  METODO mostrar_info()\n    IMPRIMIR 'Marca: {marca}, Modelo: {modelo}, Año: {anio}'\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 2: Clase Cuenta Bancaria",
+        "planteamiento": "Crear una clase `CuentaBancaria` con atributos para titular y saldo. Debe tener métodos para depositar y retirar dinero.",
+        "pseudocodigo": "CLASE CuentaBancaria\n  ATRIBUTOS: titular, saldo\n  METODO depositar(cantidad)\n    saldo = saldo + cantidad\n  FIN METODO\n  METODO retirar(cantidad)\n    SI cantidad <= saldo ENTONCES\n      saldo = saldo - cantidad\n    SINO\n      IMPRIMIR 'Fondos insuficientes'\n    FIN SI\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 3: Clase Estudiante con __str__",
+        "planteamiento": "Crear una clase `Estudiante` con nombre, edad y una lista de calificaciones. Implementa el método `__str__` para una representación legible.",
+        "pseudocodigo": "CLASE Estudiante\n  ATRIBUTOS: nombre, edad, calificaciones\n  METODO __str__()\n    RETORNAR 'Estudiante: {nombre}, Edad: {edad}'\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 4: Encapsulación - Producto",
+        "planteamiento": "Crear una clase `Producto` con atributos privados para nombre y precio. Usa getters y setters para acceder y modificar estos atributos.",
+        "pseudocodigo": "CLASE Producto\n  ATRIBUTOS PRIVADOS: _nombre, _precio\n  METODO get_nombre() RETORNA _nombre\n  METODO set_nombre(nuevo_nombre) _nombre = nuevo_nombre\n  METODO get_precio() RETORNA _precio\n  METODO set_precio(nuevo_precio) SI nuevo_precio > 0 ENTONCES _precio = nuevo_precio\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 5: Atributos de Clase - Círculo",
+        "planteamiento": "Crear una clase `Circulo` con un atributo de instancia `radio` y un atributo de clase `pi`. Añade un método para calcular el área.",
+        "pseudocodigo": "CLASE Circulo\n  ATRIBUTO DE CLASE: pi = 3.14159\n  ATRIBUTO DE INSTANCIA: radio\n  METODO calcular_area()\n    RETORNAR pi * (radio ** 2)\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 6: Métodos Estáticos - Calculadora",
+        "planteamiento": "Crear una clase `Calculadora` con métodos estáticos para sumar, restar, multiplicar y dividir.",
+        "pseudocodigo": "CLASE Calculadora\n  METODO ESTATICO sumar(a, b) RETORNA a + b\n  METODO ESTATICO restar(a, b) RETORNA a - b\n  METODO ESTATICO multiplicar(a, b) RETORNA a * b\n  METODO ESTATICO dividir(a, b) RETORNA a / b\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 7: Herencia Simple - Empleado y Gerente",
+        "planteamiento": "Crear una clase `Empleado` y una clase `Gerente` que herede de `Empleado`. El gerente debe tener un atributo adicional `departamento`.",
+        "pseudocodigo": "CLASE Empleado\n  ATRIBUTOS: nombre, salario\nFIN CLASE\n\nCLASE Gerente HEREDA DE Empleado\n  ATRIBUTOS: departamento\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 8: Polimorfismo - Animales",
+        "planteamiento": "Crear una clase `Animal` con un método `hacer_sonido()`. Crear clases `Perro` y `Gato` que hereden y sobrescriban este método.",
+        "pseudocodigo": "CLASE Animal\n  METODO hacer_sonido()\nFIN CLASE\n\nCLASE Perro HEREDA DE Animal\n  METODO hacer_sonido() IMPRIMIR 'Guau'\nFIN CLASE\n\nCLASE Gato HEREDA DE Animal\n  METODO hacer_sonido() IMPRIMIR 'Miau'\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 9: Composición - Coche y Motor",
+        "planteamiento": "Crear una clase `Motor` y una clase `Coche` que tenga un objeto `Motor` como atributo. El coche debe poder arrancar y parar el motor.",
+        "pseudocodigo": "CLASE Motor\n  METODO arrancar()\n  METODO parar()\nFIN CLASE\n\nCLASE Coche\n  ATRIBUTO: mi_motor (es un objeto Motor)\n  METODO arrancar() mi_motor.arrancar()\n  METODO parar() mi_motor.parar()\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 10: Clases Abstractas (ABC)",
+        "planteamiento": "Crear una clase abstracta `Figura` con un método abstracto `area()`. Crear clases `Circulo` y `Cuadrado` que la implementen.",
+        "pseudocodigo": "CLASE ABSTRACTA Figura\n  METODO ABSTRACTO area()\nFIN CLASE\n\nCLASE Circulo HEREDA DE Figura\n  METODO area() ...\nFIN CLASE\n\nCLASE Cuadrado HEREDA DE Figura\n  METODO area() ...\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 11: Herencia y super()",
+        "planteamiento": "Extender el ejercicio de Empleado/Gerente. Usa `super().__init__()` en `Gerente` para inicializar los atributos de la clase base.",
+        "pseudocodigo": "CLASE Empleado\n  METODO __init__(nombre, salario)\n    self.nombre = nombre\n    self.salario = salario\nFIN CLASE\n\nCLASE Gerente HEREDA DE Empleado\n  METODO __init__(nombre, salario, departamento)\n    super().__init__(nombre, salario)\n    self.departamento = departamento\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 12: Métodos Mágicos (__eq__, __lt__)",
+        "planteamiento": "Crear una clase `Carta` con valor y palo. Implementa `__eq__` y `__lt__` para poder comparar cartas entre sí.",
+        "pseudocodigo": "CLASE Carta\n  ATRIBUTOS: valor, palo\n  METODO __eq__(otra_carta) RETORNA self.valor == otra.valor\n  METODO __lt__(otra_carta) RETORNA self.valor < otra.valor\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 13: Polimorfismo con Funciones",
+        "planteamiento": "Escribe una función que reciba una lista de `Animales` (del ejercicio 8) y llame al método `hacer_sonido()` de cada uno.",
+        "pseudocodigo": "FUNCION escuchar_animales(lista_animales)\n  PARA CADA animal EN lista_animales\n    animal.hacer_sonido()\n  FIN PARA\nFIN FUNCION"
+    },
+    {
+        "titulo": "Ejercicio 14: Herencia Múltiple (Mixins)",
+        "planteamiento": "Crear una clase `Volador` (mixin) con un método `volar()`. Crear clases `Pajaro` y `Avion` que hereden de `Volador` y otra clase base.",
+        "pseudocodigo": "CLASE Volador\n  METODO volar() IMPRIMIR 'Estoy volando'\nFIN CLASE\n\nCLASE Pajaro HEREDA DE Animal, Volador ...\nCLASE Avion HEREDA DE Vehiculo, Volador ..."
+    },
+    {
+        "titulo": "Ejercicio 15: Métodos de Clase (@classmethod)",
+        "planteamiento": "Crear una clase `Persona` con un método de clase `from_nacimiento` que cree una instancia a partir del año de nacimiento.",
+        "pseudocodigo": "CLASE Persona\n  ATRIBUTOS: nombre, edad\n  METODO DE CLASE from_nacimiento(nombre, anio_nacimiento)\n    edad = anio_actual - anio_nacimiento\n    RETORNAR Persona(nombre, edad)\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 16: Propiedades (@property)",
+        "planteamiento": "Crear una clase `Temperatura` que almacene grados en Celsius pero permita obtenerlos en Fahrenheit a través de una propiedad.",
+        "pseudocodigo": "CLASE Temperatura\n  ATRIBUTO: celsius\n  PROPIEDAD fahrenheit\n    GET: RETORNA (celsius * 9/5) + 32\n  FIN PROPIEDAD\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 17: Data Classes",
+        "planteamiento": "Crear una `Data Class` para `Persona` con atributos nombre, edad y ciudad. Demuestra su simplicidad en comparación con una clase normal.",
+        "pseudocodigo": "DESDE dataclasses IMPORTAR dataclass\n\n@dataclass\nCLASE Persona:\n  nombre: str\n  edad: int\n  ciudad: str"
+    },
+    {
+        "titulo": "Ejercicio 18: Composición - Hotel y Habitaciones",
+        "planteamiento": "Crear clases `Habitacion` y `Hotel`. El `Hotel` se compone de una lista de objetos `Habitacion`.",
+        "pseudocodigo": "CLASE Habitacion\n  ATRIBUTOS: numero, tipo, ocupada\nFIN CLASE\n\nCLASE Hotel\n  ATRIBUTOS: habitaciones (lista de Habitaciones)\n  METODO reservar(numero)\n  METODO liberar(numero)\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 19: Excepciones Personalizadas",
+        "planteamiento": "Crear una excepción personalizada `SaldoInsuficienteError` para la clase `CuentaBancaria` y lanzarla cuando corresponda.",
+        "pseudocodigo": "CLASE SaldoInsuficienteError HEREDA DE Exception ...\n\nCLASE CuentaBancaria\n  METODO retirar(cantidad)\n    SI cantidad > saldo ENTONCES\n      LANZAR SaldoInsuficienteError('No hay saldo suficiente')\n    FIN SI\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 20: Contador de Instancias",
+        "planteamiento": "Crear una clase `Objeto` con un atributo de clase que cuente cuántas instancias de la clase han sido creadas.",
+        "pseudocodigo": "CLASE Objeto\n  ATRIBUTO DE CLASE: contador = 0\n  METODO __init__()\n    Objeto.contador = Objeto.contador + 1\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 21: Patrón Singleton",
+        "planteamiento": "Implementar el patrón Singleton en una clase `Configuracion` para asegurar que solo exista una instancia de ella.",
+        "pseudocodigo": "CLASE Configuracion\n  ATRIBUTO DE CLASE: _instancia = NULO\n  METODO __new__()\n    SI _instancia ES NULO ENTONCES\n      _instancia = crear nueva instancia\n    FIN SI\n    RETORNAR _instancia\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 22: Patrón Factory",
+        "planteamiento": "Crear una `FabricaDePersonajes` que devuelva objetos `Guerrero` o `Mago` según un parámetro.",
+        "pseudocodigo": "CLASE Guerrero ...\nCLASE Mago ...\n\nCLASE FabricaDePersonajes\n  METODO crear_personaje(tipo)\n    SI tipo == 'guerrero' RETORNA Guerrero()\n    SI tipo == 'mago' RETORNA Mago()\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 23: Juego de Rol Básico",
+        "planteamiento": "Crear una clase `Personaje` con vida y fuerza. Debe tener un método `atacar` que reduzca la vida de otro personaje.",
+        "pseudocodigo": "CLASE Personaje\n  ATRIBUTOS: vida, fuerza\n  METODO atacar(otro_personaje)\n    otro_personaje.vida = otro_personaje.vida - self.fuerza\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 24: Context Managers (with)",
+        "planteamiento": "Crear una clase `ManejadorDeArchivo` que implemente `__enter__` y `__exit__` para abrir y cerrar un archivo de forma segura.",
+        "pseudocodigo": "CLASE ManejadorDeArchivo\n  METODO __init__(nombre_archivo, modo)\n  METODO __enter__()\n    self.archivo = abrir(nombre_archivo, modo)\n    RETORNAR self.archivo\n  METODO __exit__(tipo_exc, valor_exc, traceback)\n    self.archivo.cerrar()\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 25: Generadores",
+        "planteamiento": "Crear una función generadora `fibonacci(n)` que genere los primeros `n` números de la secuencia de Fibonacci.",
+        "pseudocodigo": "FUNCION GENERADORA fibonacci(n)\n  a, b = 0, 1\n  PARA _ EN RANGO(n)\n    YIELD a\n    a, b = b, a + b\n  FIN PARA\nFIN FUNCION"
+    },
+    {
+        "titulo": "Ejercicio 26: Inmutabilidad",
+        "planteamiento": "Crear una clase `Punto` inmutable (sus atributos x, y no pueden cambiar después de la creación). Intenta usar `__slots__` y propiedades de solo lectura.",
+        "pseudocodigo": "CLASE Punto\n  __slots__ = ['_x', '_y']\n  METODO __init__(x, y)\n    self._x = x\n    self._y = y\n  PROPIEDAD x GET self._x\n  PROPIEDAD y GET self._y\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 27: Descriptores",
+        "planteamiento": "Crear un descriptor `NoNegativo` que asegure que un atributo de una clase nunca pueda ser asignado a un valor negativo.",
+        "pseudocodigo": "CLASE NoNegativo\n  METODO __get__ ...\n  METODO __set__(instancia, valor)\n    SI valor < 0 LANZAR ValueError\n    ...\n  FIN METODO\nFIN CLASE\n\nCLASE MiClase\n  atributo = NoNegativo()\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 28: Metaclases",
+        "planteamiento": "Crear una metaclase `SingletonMeta` que convierta cualquier clase que la use en un Singleton.",
+        "pseudocodigo": "CLASE SingletonMeta HEREDA DE type\n  _instancias = {}\n  METODO __call__(...)\n    SI clase NO ESTA EN _instancias\n      _instancias[clase] = crear nueva instancia\n    FIN SI\n    RETORNAR _instancias[clase]\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 29: Iteradores Personalizados",
+        "planteamiento": "Crear una clase `Contador` que actúe como un iterador, devolviendo números del 1 hasta un límite especificado.",
+        "pseudocodigo": "CLASE Contador\n  METODO __iter__() RETORNA self\n  METODO __next__()\n    SI contador > limite LANZAR StopIteration\n    ...\n  FIN METODO\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 30: Patrón Observer",
+        "planteamiento": "Implementar el patrón Observer. Crear una clase `Sujeto` y `Observador`. Cuando el estado del `Sujeto` cambia, notifica a todos sus observadores.",
+        "pseudocodigo": "CLASE Sujeto\n  METODO agregar_observador(obs)\n  METODO notificar()\n    PARA obs EN observadores: obs.actualizar()\nFIN CLASE\n\nCLASE Observador\n  METODO actualizar()\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 31: Sistema de Ficheros Simulado",
+        "planteamiento": "Crear clases `Archivo` y `Directorio`. Un `Directorio` puede contener `Archivos` y otros `Directorios` (patrón Composite).",
+        "pseudocodigo": "CLASE Componente\n  METODO mostrar()\nFIN CLASE\n\nCLASE Archivo HEREDA DE Componente...\nCLASE Directorio HEREDA DE Componente\n  ATRIBUTO: hijos (lista de Componentes)\nFIN CLASE"
+    },
+    {
+        "titulo": "Ejercicio 32: Patrón Chain of Responsibility",
+        "planteamiento": "Implementar una cadena de responsabilidad para procesar solicitudes. Crear manejadores que decidan si pueden procesar una solicitud o la pasan al siguiente.",
+        "pseudocodigo": "CLASE Manejador\n  ATRIBUTOS: siguiente_manejador\n  METODO manejar_solicitud(solicitud)\n    SI puede_manejar(solicitud) ENTONCES ...\n    SINO SI siguiente_manejador NO ES NULO ENTONCES\n      siguiente_manejador.manejar_solicitud(solicitud)\n    FIN SI\n  FIN METODO\nFIN CLASE"
+    }
+]
