@@ -47,11 +47,16 @@ jobs:
       # Step 4: Run issue creation script with error handling
       - name: Run issue creation script
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for GitHub API access
-          REPO_NAME: ${{ github.repository }} # Use built-in variable instead of secret
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_PAT: ${{ secrets.ORG_PAT }}
+          REPO_NAME: ${{ github.repository }}
         run: |
           if [ -z "$GITHUB_TOKEN" ]; then
             echo "Error: GITHUB_TOKEN is not set"
+            exit 1
+          fi
+          if [ -z "$ORG_PAT" ]; then
+            echo "Error: ORG_PAT is not set"
             exit 1
           fi
           if [ -z "$REPO_NAME" ]; then

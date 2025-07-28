@@ -1,7 +1,6 @@
 import os
 import random
 import json
-import requests
 from dotenv import load_dotenv
 from github import Github
 
@@ -10,18 +9,18 @@ from github import Github
 load_dotenv()
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-REPO_NAME = os.getenv("REPO_NAME") # Formato: 'nombre_usuario/nombre_repositorio'
+REPO_NAME = os.getenv("REPO_NAME")  # Formato: 'nombre_usuario/nombre_repositorio'
+ORG_PAT = os.getenv('ORG_PAT')
 
 # Constantes de la organización y equipo
 ORG_NAME = "dev-senior-estudiantes"
-TEAM_SLUG = "python-dev-senior" # El 'slug' del equipo
+TEAM_SLUG = "python-dev-senior"  # El 'slug' del equipo
 
 # --- Funciones de Carga y Utilidades --- #
 
 def cargar_ejercicios():
     """Carga los ejercicios desde el archivo JSON."""
     try:
-        # La ruta es relativa a la ubicación del script
         script_dir = os.path.dirname(__file__)
         json_path = os.path.join(script_dir, 'ejercicios.json')
         with open(json_path, "r", encoding="utf-8") as f:
@@ -44,38 +43,33 @@ def cargar_plantilla_issue():
         print("Error: No se encontró la plantilla de issue en .github/ISSUE_TEMPLATE/")
         return None
 
-def add_issue_to_project_column(issue_id, column_id):
-    """Añade un issue a una columna de un proyecto (clásico) usando la API REST."""
-    url = f"https://api.github.com/projects/columns/{column_id}/cards"
-    headers = {
-        "Authorization": f"token {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github.inertia-preview+json" # Header requerido por la API de Proyectos
-    }
-    data = {
-        "content_id": issue_id,
-        "content_type": "Issue"
-    }
-    response = requests.post(url, headers=headers, json=data)
-    if response.status_code == 201:
-        print(f"Issue {issue_id} añadido a la columna {column_id} con éxito.")
-    else:
-        print(f"Error al añadir issue {issue_id} a la columna: {response.status_code} - {response.text}")
-
 def main():
     """Función principal para automatizar la creación de issues y proyectos en GitHub."""
-    # 1. Autenticación
-    g = Github(GITHUB_TOKEN)
+    # Verificar que las variables de entorno están definidas
+    if not GITHUB_TOKEN:
+        print("Error: GITHUB_TOKEN is not set")
+        return
+    if not ORG_PAT:
+        print("Error: ORG_PAT is not set")
+        return
+    if not REPO_NAME:
+        print("Error: REPO_NAME is not set")
+        return
 
-    # 2. Obtener la organización y el repositorio
+    # 1. Autenticación
+    g_repo = Github(GITHUB_TOKEN)  # Para operaciones de repositorio
+    g_org = Github(ORG_PAT)  # Para operaciones de organización
+
+    # 2. Obtener el repositorio
     try:
-        org = g.get_organization(ORG_NAME)
-        repo = org.get_repo(REPO_NAME.split('/')[1])
+        repo = g_repo.get_repo(REPO_NAME)
     except Exception as e:
-        print(f"Error al acceder a la organización o repositorio: {e}")
+        print(f"Error al acceder al repositorio: {e}")
         return
 
     # 3. Obtener miembros del equipo
     try:
+        org = g_org.get_organization(ORG_NAME)
         team = org.get_team_by_slug(TEAM_SLUG)
         team_members = [member.login for member in team.get_members()]
         if not team_members:
@@ -95,30 +89,33 @@ def main():
         print("No se encontraron ejercicios en 'ejercicios.json'. Abortando.")
         return
 
-    # 5. Crear un nuevo proyecto Kanban
+    # 5. Crear o obtener el proyecto Kanban
     project_name = "Proyecto de Ejercicios POO - Python"
-    todo_column_id = None
     print(f"Creando o verificando proyecto '{project_name}'...")
     try:
+        # Intentar crear el proyecto
         project = repo.create_project(project_name, body="Proyecto para gestionar los ejercicios de POO.")
-        # Crear columnas Kanban
-        todo_column = project.create_column("Pendiente")
-        project.create_column("En Progreso")
-        project.create_column("Finalizado")
-        todo_column_id = todo_column.id
-        print("Proyecto y columnas creadas con éxito.")
+        # Crear columnas Kanban si no existen
+        columns = project.get_columns()
+        if not any(col.name == "Pendiente" for col in columns):
+            todo_column = project.create_column("Pendiente")
+        else:
+            todo_column = next(col for col in columns if col.name == "Pendiente")
+        if not any(col.name == "En Progreso" for col in columns):
+            project.create_column("En Progreso")
+        if not any(col.name == "Finalizado" for col in columns):
+            project.create_column("Finalizado")
+        print("Proyecto y columnas configuradas con éxito.")
     except Exception as e:
-        # Si el proyecto ya existe, búscalo para obtener el ID de la columna
+        # Si el proyecto ya existe, obtenerlo
         print(f"No se pudo crear el proyecto (puede que ya exista): {e}")
         projects = repo.get_projects(state='open')
-        found_project = next((p for p in projects if p.name == project_name), None)
-        if found_project:
+        project = next((p for p in projects if p.name == project_name), None)
+        if project:
             print(f"Encontrado proyecto existente '{project_name}'.")
-            columns = found_project.get_columns()
+            columns = project.get_columns()
             todo_column = next((c for c in columns if c.name == "Pendiente"), None)
-            if todo_column:
-                todo_column_id = todo_column.id
-            else:
+            if not todo_column:
                 print("Error: No se encontró la columna 'Pendiente' en el proyecto existente.")
                 return
         else:
@@ -142,14 +139,14 @@ def main():
                 title=ejercicio["titulo"],
                 body=issue_body,
                 assignee=assignee,
-                labels=["ejercicio", "POO", "python"] # Etiquetas personalizables
+                labels=["ejercicio", "POO", "python"]  # Etiquetas personalizables
             )
             print(f"Creado issue '{issue.title}' y asignado a '{assignee}'.")
 
-            # Añadir el issue al proyecto
-            if todo_column_id:
-                add_issue_to_project_column(issue.id, todo_column_id)
-
+            # Añadir el issue a la columna 'Pendiente'
+            if todo_column:
+                card = todo_column.create_card(content_id=issue.id, content_type="Issue")
+                print(f"Issue {issue.id} añadido a la columna 'Pendiente' con éxito.")
         except Exception as e:
             print(f"Error al procesar el issue '{ejercicio['titulo']}': {e}")
 
