@@ -1,5 +1,6 @@
 # Ignorar archivos de entorno
 .env
+.DS_Store
 
 # Ignorar directorios de Python
 __pycache__/
