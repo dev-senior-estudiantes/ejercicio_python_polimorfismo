@@ -53,13 +53,13 @@ def main():
     # Verificar que las variables de entorno están definidas
     if not GITHUB_TOKEN:
         print("Error: GITHUB_TOKEN is not set")
-        return
+        return None
     if not ORG_PAT:
         print("Error: ORG_PAT is not set")
-        return
+        return None
     if not REPO_NAME:
         print("Error: REPO_NAME is not set")
-        return
+        return None
 
     # 1. Autenticación
     g_repo = Github(GITHUB_TOKEN)  # Para operaciones de repositorio
@@ -70,7 +70,7 @@ def main():
         repo = g_repo.get_repo(REPO_NAME)
     except GithubException as e:
         print(f"Error al acceder al repositorio: {e}")
-        return
+        return None
 
     # 3. Obtener miembros del equipo
     try:
@@ -79,25 +79,25 @@ def main():
         team_members = [member.login for member in team.get_members()]
         if not team_members:
             print(f"El equipo '{TEAM_SLUG}' no tiene miembros. No se pueden asignar issues.")
-            return
+            return None
     except GithubException as e:
         print(f"Error al obtener el equipo o sus miembros: {e}")
-        return
+        return None
 
     # 4. Cargar plantillas y datos
     issue_template = cargar_plantilla_issue()
     if not issue_template:
-        return
-    
+        return None
+
     ejercicios_poo = cargar_ejercicios()
     if not ejercicios_poo:
         print("No se encontraron ejercicios en 'ejercicios.json'. Abortando.")
-        return
+        return None
 
     # 5. Crear y asignar issues (sin gestión de proyectos clásicos ni columnas Kanban)
     print("\nCreando y asignando issues...")
     for ejercicio in ejercicios_poo:
-        assignee = random.choice(team_members) 
+        assignee = random.choice(team_members)
         # Formatear el cuerpo del issue
         issue_body = issue_template.format(
             planteamiento=ejercicio["planteamiento"],
@@ -110,7 +110,7 @@ def main():
                 title=ejercicio["titulo"],
                 body=issue_body,
                 assignee=assignee,
-                labels=["ejercicio", "POO", "python"]  # Etiquetas personalizables
+                labels=["ejercicio", "POO", "python"]
             )
             print(f"Creado issue '{issue.title}' y asignado a '{assignee}'.")
         except (KeyError, TypeError) as e:
@@ -120,6 +120,7 @@ def main():
 
     print("\n¡Proceso completado!")
     print("Los issues han sido creados y asignados.")
+
 
 if __name__ == "__main__":
     main()
