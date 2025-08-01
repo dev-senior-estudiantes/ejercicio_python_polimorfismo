@@ -41,11 +41,14 @@ def cargar_plantilla_issue():
     """Carga el contenido de la plantilla de issue."""
     try:
         script_dir = os.path.dirname(__file__)
-        template_path = os.path.join(script_dir, "..", ".github", "ISSUE_TEMPLATE", "ejercicio_poo_template.md")
+        template_path = os.path.join(script_dir,\
+            "..", ".github", "ISSUE_TEMPLATE",\
+                "ejercicio_poo_template.md")
         with open(template_path, "r", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
-        print("Error: No se encontró la plantilla de issue en .github/ISSUE_TEMPLATE/")
+        print("Error: No se encontró la plantilla\
+            de issue en .github/ISSUE_TEMPLATE/")
         return None
 
 def main():
@@ -78,7 +81,7 @@ def main():
         team = org.get_team_by_slug(TEAM_SLUG)
         team_members = [member.login for member in team.get_members()]
         if not team_members:
-            print(f"El equipo '{TEAM_SLUG}' no tiene miembros. No se pueden asignar issues.")
+            print(f"El equipo '{TEAM_SLUG}' no\ tiene miembros. No se pueden asignar issues.")
             return None
     except GithubException as e:
         print(f"Error al obtener el equipo o sus miembros: {e}")
@@ -114,9 +117,12 @@ def main():
             )
             print(f"Creado issue '{issue.title}' y asignado a '{assignee}'.")
         except (KeyError, TypeError) as e:
-            print(f"Error en los datos del ejercicio '{ejercicio.get('titulo', 'Sin título')}': {e}")
+            print(f"Error en los datos del ejercicio\
+                '{ejercicio.get('titulo',
+                'Sin título')}': {e}")
         except GithubException as e:
-            print(f"Error de GitHub al procesar el issue '{ejercicio.get('titulo', 'Sin título')}': {e}")
+            print(f"Error de GitHub al procesar el issue\
+                '{ejercicio.get('titulo', 'Sin título')}': {e}")
 
     print("\n¡Proceso completado!")
     print("Los issues han sido creados y asignados.")
