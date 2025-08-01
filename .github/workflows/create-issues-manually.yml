@@ -1,36 +1,67 @@
 name: 01 - Create Project Issues Manually
 
-# Disparador: workflow_dispatch permite ejecutarlo manualmente
+# Trigger: Allows manual execution via workflow_dispatch
 on:
   workflow_dispatch:
+
+# Workflow-level permissions (minimal set required)
+permissions:
+  contents: read # Required for checkout
+  issues: write # Required for creating/modifying issues
+  pull-requests: write # Optional: for PR-related actions
+  repository-projects: write # Required for repository project modifications
+  # Removed organization-projects unless explicitly needed
 
 jobs:
   create-issues:
     runs-on: ubuntu-latest
-    # Añadir permisos explícitos al job
+
+    # Job-level permissions (specific to this job, overriding workflow-level if needed)
     permissions:
-      contents: read
-      issues: write
-      pull-requests: write
-      organization_administration: read  # Cambiado de 'organization' a 'organization_administration'
-      members: read       # Necesario para leer los miembros del equipo
-      repository-projects: write
-      organization-projects: write
+      contents: read # Read access for repository contents
+      issues: write # Write access for issues
+      pull-requests: write # Write access for pull requests (optional)
+      repository-projects: write # Write access for repository projects
 
     steps:
+      # Step 1: Checkout repository code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Step 2: Set up Python environment
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # Updated to latest version
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
+      # Step 3: Install Python dependencies
       - name: Install dependencies
-        run: pip install -r scripts/requirements.txt
+        run: |
+          if [ -f scripts/requirements.txt ]; then
+            pip install -r scripts/requirements.txt
+          else
+            echo "Error: requirements.txt not found in scripts directory"
+            exit 1
+          fi
 
+      # Step 4: Run issue creation script with error handling
       - name: Run issue creation script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO_NAME: ${{ secrets.REPO_NAME }}
-        run: python scripts/github_automation.py
+          ORG_PAT: ${{ secrets.ORG_PAT }}
+          REPO_NAME: ${{ github.repository }}
+        run: |
+          if [ -z "$GITHUB_TOKEN" ]; then
+            echo "Error: GITHUB_TOKEN is not set"
+            exit 1
+          fi
+          if [ -z "$ORG_PAT" ]; then
+            echo "Error: ORG_PAT is not set"
+            exit 1
+          fi
+          if [ -z "$REPO_NAME" ]; then
+            echo "Error: REPO_NAME is not set"
+            exit 1
+          fi
+          python scripts/github_automation.py
+        continue-on-error: false # Fail the job on script error
