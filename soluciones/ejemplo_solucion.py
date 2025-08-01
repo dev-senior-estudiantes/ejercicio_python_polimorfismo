@@ -8,7 +8,6 @@ class MiClase:
     def __init__(self, nombre):
         """
         Inicializa una instancia de MiClase.
-
         Args:
             nombre (str): El nombre de la persona a saludar.
         """
@@ -17,8 +16,16 @@ class MiClase:
     def saludar(self):
         """
         Genera un saludo personalizado usando el nombre.
-
         Returns:
             str: Un saludo en formato de cadena.
         """
         return f"Hola, {self.nombre}"
+
+    def despedirse(self):
+        """
+        Genera una despedida personalizada.
+        Returns:
+            str: Una despedida en formato de cadena.
+        """
+        return f"Adiós, {self.nombre}"
+    
