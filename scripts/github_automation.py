@@ -117,12 +117,16 @@ def main():
             )
             print(f"Creado issue '{issue.title}' y asignado a '{assignee}'.")
         except (KeyError, TypeError) as e:
-            print(f"Error en los datos del ejercicio\
-                '{ejercicio.get('titulo',
-                'Sin título')}': {e}")
+            print(
+                f"Error en los datos del ejercicio "
+                f"'{ejercicio.get('titulo',
+                'Sin título')}': {e}"
+                )
         except GithubException as e:
-            print(f"Error de GitHub al procesar el issue\
-                '{ejercicio.get('titulo', 'Sin título')}': {e}")
+            print(
+                  f"Error de GitHub al procesar el issue "
+                  f"'{ejercicio.get('titulo', 'Sin título')}': {e}"
+                  )
 
     print("\n¡Proceso completado!")
     print("Los issues han sido creados y asignados.")
