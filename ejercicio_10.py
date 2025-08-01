@@ -1,13 +1,6 @@
 from abc import ABC, abstractmethod
 import math
 
-"""_summary_
-
-Este archivo contiene un método abstracta que considera a la clase general forma y tiene
-dos subclases implementan su método.
-
-"""
-
 #Clase Abstracta
 class Forma(ABC):
 
@@ -42,12 +35,13 @@ circulo1 = Circulo(4)
 #por la subclase círculo
 area1 = circulo1.area()
 
-print(area1)
+print(f"El area del circulo de radio {circulo1.medicion} es {area1:.2f}")
 
 cuadrado1 = Cuadrado(3)
 
 #cálculo del área del cuadrado utilizando el método área y que ha sido modificado
 #por la subclase cuadrado
 area2 = cuadrado1.area()
+
 print(area2)
 
