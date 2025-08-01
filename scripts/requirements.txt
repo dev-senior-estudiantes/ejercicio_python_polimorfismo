@@ -1,4 +1,0 @@
-PyGithub
-python-dotenv
-requests
-pylint
