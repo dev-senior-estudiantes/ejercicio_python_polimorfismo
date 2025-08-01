@@ -5,6 +5,7 @@ Para automatizar la creación y asignación de issues de ejercicios de POO en un
 import os
 import random
 import json
+import sys
 from dotenv import load_dotenv
 from github import Github
 from github.GithubException import GithubException
@@ -56,13 +57,13 @@ def main():
     # Verificar que las variables de entorno están definidas
     if not GITHUB_TOKEN:
         print("Error: GITHUB_TOKEN is not set")
-        return None
+        sys.exit(1)
     if not ORG_PAT:
         print("Error: ORG_PAT is not set")
-        return None
+        sys.exit(1)
     if not REPO_NAME:
         print("Error: REPO_NAME is not set")
-        return None
+        sys.exit(1)
 
     # 1. Autenticación
     g_repo = Github(GITHUB_TOKEN)  # Para operaciones de repositorio
@@ -73,7 +74,7 @@ def main():
         repo = g_repo.get_repo(REPO_NAME)
     except GithubException as e:
         print(f"Error al acceder al repositorio: {e}")
-        return None
+        sys.exit(1)
 
     # 3. Obtener miembros del equipo
     try:
@@ -81,11 +82,11 @@ def main():
         team = org.get_team_by_slug(TEAM_SLUG)
         team_members = [member.login for member in team.get_members()]
         if not team_members:
-            print(f"El equipo '{TEAM_SLUG}' no\ tiene miembros. No se pueden asignar issues.")
-            return None
+            print(f"El equipo '{TEAM_SLUG}' no tiene miembros. No se pueden asignar issues.")
+            sys.exit(1)
     except GithubException as e:
         print(f"Error al obtener el equipo o sus miembros: {e}")
-        return None
+        sys.exit(1)
 
     # 4. Cargar plantillas y datos
     issue_template = cargar_plantilla_issue()
@@ -127,6 +128,7 @@ def main():
 
     print("\n¡Proceso completado!")
     print("Los issues han sido creados y asignados.")
+    sys.exit(0)
 
 
 if __name__ == "__main__":
