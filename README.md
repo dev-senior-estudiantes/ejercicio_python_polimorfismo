@@ -1,3 +1,36 @@
+## Gestión de Dependencias
+
+Este proyecto utiliza un archivo `requirements.txt` para gestionar las dependencias de Python necesarias. En este archivo se listan las librerías requeridas para que el proyecto funcione correctamente, incluyendo sus versiones (si se especifican).
+
+### Creación y Actualización del Archivo
+
+Para generar o actualizar el archivo `requirements.txt` con las dependencias instaladas en tu entorno virtual, ejecuta:
+
+```bash
+pip freeze > requirements.txt
+```
+
+Este comando captura la lista de paquetes instalados (con sus versiones) y la guarda en `requirements.txt`.
+
+### Instalación de las Dependencias
+
+Para instalar todas las dependencias listadas en `requirements.txt`, abre la terminal en el directorio del proyecto y ejecuta:
+
+```bash
+pip install -r requirements.txt
+```
+
+Esto se encargará de descargar e instalar las librerías necesarias, tales como:
+
+- **PyGithub**: Para interactuar con la API de GitHub.
+- **python-dotenv**: Para cargar variables de entorno.
+- **requests**: Para realizar peticiones HTTP.
+- **pylint**: Para analizar la calidad del código.
+- **numpy** y **pandas**: Para operaciones numéricas y manipulación de datos.
+- **flake8**: Para el análisis de estilo y convenciones del código.
+
+Este proceso garantiza que todos los colaboradores o estudiantes tengan las mismas dependencias y versiones en sus entornos de desarrollo.
+
 # Workflows de Calidad en GitHub Actions
 
 Este repositorio utiliza workflows de GitHub Actions para asegurar la calidad del código en cada Pull Request. A continuación se documentan los principales workflows:

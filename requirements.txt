@@ -2,3 +2,6 @@ PyGithub
 python-dotenv
 requests
 pylint
+numpy
+pandas
+flake8
