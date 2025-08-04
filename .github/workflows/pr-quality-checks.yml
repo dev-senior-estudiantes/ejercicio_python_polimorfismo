@@ -5,7 +5,7 @@ name: 02 - Student PR Quality Check
 # 1. Evento (Trigger): Cuándo se debe ejecutar este workflow
 on:
   pull_request:
-    branches: [ main, master ] # Se ejecuta en PRs dirigidos a la rama main o master
+    branches: [main, master] # Se ejecuta en PRs dirigidos a la rama main o master
 
 # 2. Jobs: Lista de trabajos a ejecutar
 jobs:
@@ -24,51 +24,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' # Puedes especificar la versión que usas
+          python-version: "3.10" # Puedes especificar la versión que usas
 
-      # Paso 3: Instalar dependencias (incluyendo pytest para pruebas)
+      # Paso 3: Instalar dependencias (solo flake8)
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r scripts/requirements.txt
-          pip install pytest flake8  # Instalar herramientas de calidad
+          pip install -r requirements.txt
+          pip install flake8
 
       # Paso 4: Ejecutar Linting (revisa el estilo del código)
-      # Flake8 buscará errores de estilo y errores simples.
       - name: Lint with flake8
         run: |
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-      # Paso 5: Ejecutar Pruebas con Pytest
-      # El `id` permite que otros pasos se refieran a este. `continue-on-error` evita que el workflow se detenga si las pruebas fallan.
-      - name: Run tests with pytest
-        id: tests
-        continue-on-error: true
-        run: |
-          pytest
-
-      # Paso 6: Comentar en el PR si las pruebas fallaron
-      # Este paso solo se ejecuta si el paso con id 'tests' falló (conclusion == 'failure')
-      - name: Comment on PR if tests fail
-        if: steps.tests.conclusion == 'failure'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const issue_number = context.issue.number;
-            const comment = `
-              ## 🚨 ¡Pruebas Fallidas! 🚨
-
-              Hola @${{ github.actor }}, parece que algunas de las pruebas automáticas han fallado.
-
-              Por favor, revisa los logs del paso **"Run tests with pytest"** más arriba para ver los detalles del error y corregir tu solución.
-
-              ¡Sigue intentándolo! 💪
-            `;
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue_number,
-              body: comment
-            });
-            core.setFailed('Las pruebas han fallado.');

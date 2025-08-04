@@ -1,10 +1,33 @@
-# Ignorar archivos de entorno
+# Archivos y directorios Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos compilados / optimizados / DLLs
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Entornos virtuales
+env/
+venv/
+ENV/
+.Python
+
+# Archivo de variables de entorno
 .env
 
-# Ignorar directorios de Python
-__pycache__/
-*.pyc
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
 
-# Ignorar archivos de IDE
+# Archivos de logs
+*.log
+
+# Archivos y directorios de IDEs
 .vscode/
 .idea/
