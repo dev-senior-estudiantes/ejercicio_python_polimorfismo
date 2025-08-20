@@ -31,6 +31,10 @@ class Forma(ABC):
         Returns:
             float: Área de la forma.
         """
+    @abstractmethod
+    def descripcion(self):
+        """Devuelve una descripción de la forma."""
+
 class Circulo(Forma):
     """
     Clase que representa un círculo, derivada de Forma.
@@ -41,6 +45,10 @@ class Circulo(Forma):
         Calcula el área de un círculo usando el radio.
         """
         return math.pi * (self.medicion ** 2)
+
+    def descripcion(self):
+        """Devuelve una descripción del circulo."""
+        return f"El circulo tiene un radio de {self.medicion}."
 
 
 class Cuadrado(Forma):
@@ -56,6 +64,10 @@ class Cuadrado(Forma):
             float: Área del cuadrado.
         """
         return self.medicion ** 2
+
+    def descripcion(self):
+        """Devuelve una descripción del cuadrado."""
+        return f"El cuadrado tiene un lado de {self.medicion}."
 
 
 # Crear un objeto Círculo con radio 4 y calcular su área
