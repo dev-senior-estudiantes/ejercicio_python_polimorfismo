@@ -31,7 +31,6 @@ class Forma(ABC):
         Returns:
             float: Área de la forma.
         """
-        
 class Circulo(Forma):
     """
     Clase que representa un círculo, derivada de Forma.
