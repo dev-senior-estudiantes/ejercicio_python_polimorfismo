@@ -6,14 +6,14 @@ Este es el ejercicio 28 clase SingletonMeta.
 class SingletonMeta(type):
     """Define una metaclase llamada SingletonMeta, que hereda de 'type'."""
 
-    _instancia = {}  # Diccionario para almacenar las instancias únicas de las clases.
+    _instancia = {}  # Diccionario que alamcena las clases únicas.
 
     def __call__(cls, *args, **kwargs):
         """llama cuando se intenta crear una instancia de una clase."""
         if (
             cls not in cls._instancia
-        ):  # Comprueba si la clase (cls) ya tiene una instancia en el diccionario.
-            # Si no existe, crea la instancia de la clase usando el constructor normal de 'type'.
+        ):  # Comprueba si la clase (cls) ya tiene una instancia en el dict.
+            # Crea la instancia de la clase con el constructor normal 'type'.
             cls._instancia[cls] = super().__call__(*args, **kwargs)
         return cls._instancia[
             cls
@@ -21,7 +21,15 @@ class SingletonMeta(type):
 
 
 class Misingleton(metaclass=SingletonMeta):
-    """Define la clase Misingleton, especificando SingletonMeta como su metaclase."""
+    """Define la clase Misingleton, con SingletonMeta como su metaclase."""
+
+    def saludar(self) -> str:
+        """Método de ejemplo para comprobar el Singleton."""
+        return "Hola, soy la única instancia de Misingleton"
+
+    def info(self) -> str:
+        """Devuelve información de la instancia única."""
+        return f"Soy la instancia única con id: {id(self)}"
 
 
 if (
@@ -29,6 +37,8 @@ if (
 ):  # Este bloque se ejecuta solo si el script se corre directamente.
     a = Misingleton()  # Crea la primera instancia de Misingleton.
     b = Misingleton()  # Intenta crear una segunda instancia de Misingleton.
-    print(
-        a is b
-    )  # Imprime True si 'a' y 'b' son el mismo objeto (lo que confirma el patrón Singleton).
+    print(a is b)  # True si 'a' y 'b' son el mismo objeto.
+    print(a.info())
+    print(a.saludar())
+    print(b.info())
+    print(b.saludar())
