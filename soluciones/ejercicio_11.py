@@ -39,6 +39,34 @@ class Empleado:
         self.nombre = nombre
         self.salario = salario
 
+    def get_nombre(self):
+        """
+    Método para obtener el nombre del empleado.
+
+    """
+        return self.nombre
+
+    def set_nombre(self, value):
+        """
+    Método para setear el nombre del empleado.
+
+    """
+        self.nombre = value
+
+    def get_salario(self):
+        """
+    Método para obtener el salario del empleado.
+
+    """
+        return self.salario
+
+    def set_salario(self, value):
+        """
+    Método para setear el salario del empleado.
+
+    """
+        self.salario = value
+
 
 class Gerente(Empleado):
     """
@@ -72,3 +100,17 @@ class Gerente(Empleado):
         """
         super().__init__(nombre, salario)
         self.departamento = departamento
+
+    def get_departamento(self):
+        """
+    Método para obtener el departamento del gerente.
+
+    """
+        return self.departamento
+
+    def set_departamento(self, value):
+        """
+    Método para setear el departamento del gerente.
+
+    """
+        self.departamento = value
